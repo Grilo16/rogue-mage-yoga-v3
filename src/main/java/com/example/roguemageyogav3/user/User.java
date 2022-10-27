@@ -35,10 +35,32 @@ public class User {
     private String email;
 
     @Column(name = "credits", nullable = false)
-    private Long credits;
+    private Long credits = 0L;
 
     @ManyToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Business> memberships = new LinkedHashSet<>();
+
+    public User() {
+    }
+
+    public User(Set<Business> businesses, Set<Lesson> lessons, String firstName, String lastName, String email, Set<Business> memberships) {
+        this.businesses = businesses;
+        this.lessons = lessons;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.memberships = memberships;
+    }
+
+    public User(Long id, Set<Business> businesses, Set<Lesson> lessons, String firstName, String lastName, String email, Set<Business> memberships) {
+        this.id = id;
+        this.businesses = businesses;
+        this.lessons = lessons;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.memberships = memberships;
+    }
 
     public Set<Business> getMemberships() {
         return memberships;
