@@ -2,6 +2,7 @@ package com.example.roguemageyogav3.business;
 
 import com.example.roguemageyogav3.Lesson.Lesson;
 import com.example.roguemageyogav3.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -16,11 +17,13 @@ public class Business {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
+    @JsonIgnoreProperties({"businesses", "memberships"})
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "businesses_owners",
             joinColumns = @JoinColumn(name = "business_id"),
             inverseJoinColumns = @JoinColumn(name = "owner_id"))
-    private Set<User> owner = new LinkedHashSet<>();
+    private Set<User> owners = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "business", orphanRemoval = true)
     private Set<Lesson> lessons = new LinkedHashSet<>();
@@ -29,13 +32,26 @@ public class Business {
     private String name;
 
     @Column(name = "balance", nullable = false)
-    private Long balance;
+    private Long balance = 0L;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "businesses_members",
             joinColumns = @JoinColumn(name = "business_id"),
             inverseJoinColumns = @JoinColumn(name = "members_id"))
     private Set<User> members = new LinkedHashSet<>();
+
+
+    public Business() {
+    }
+
+    public Business(String name) {
+        this.name = name;
+    }
+
+    public Business(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Set<User> getMembers() {
         return members;
@@ -61,12 +77,12 @@ public class Business {
         this.name = name;
     }
 
-    public Set<User> getOwner() {
-        return owner;
+    public Set<User> getOwners() {
+        return owners;
     }
 
-    public void setOwner(Set<User> owner) {
-        this.owner = owner;
+    public void setOwners(Set<User> owners) {
+        this.owners = owners;
     }
 
     public Set<Lesson> getLessons() {
@@ -85,4 +101,11 @@ public class Business {
         this.id = id;
     }
 
+    public Long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Long balance) {
+        this.balance = balance;
+    }
 }

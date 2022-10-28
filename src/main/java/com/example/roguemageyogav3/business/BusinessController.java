@@ -1,10 +1,7 @@
 package com.example.roguemageyogav3.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,10 @@ public class BusinessController {
     @GetMapping
     public List<Business> getAllBusinesses(){
         return businessService.getAllBusinesses();
+    }
+
+    @PostMapping(value = "/{id}")
+    public void createNewBusiness(@PathVariable("id") Long id ,@RequestBody Business business){
+        businessService.createNewBusiness(id, business);
     }
 }

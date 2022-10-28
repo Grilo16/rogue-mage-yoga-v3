@@ -2,6 +2,7 @@ package com.example.roguemageyogav3.user;
 
 import com.example.roguemageyogav3.Lesson.Lesson;
 import com.example.roguemageyogav3.business.Business;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -19,7 +20,9 @@ public class User {
     private Long id;
 
 
-    @ManyToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+
+    @JsonIgnoreProperties({"owners"})
+    @ManyToMany(mappedBy = "owners", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Business> businesses = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "students", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
@@ -37,7 +40,7 @@ public class User {
     @Column(name = "credits", nullable = false)
     private Long credits = 0L;
 
-    @ManyToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "members", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Business> memberships = new LinkedHashSet<>();
 
     public User() {
